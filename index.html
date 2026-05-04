@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a14" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ISLYR" />
+  <meta name="description" content="Create, explore, and connect across breathtaking virtual island worlds." />
+  <title>ISLYR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       ISLYR — Design System & Global Styles
+    ============================================================ */
+    :root {
+      --bg-deep:     #0a0a14;
+      --bg-base:     #0e0e1c;
+      --bg-card:     rgba(255,255,255,0.04);
+      --bg-card-hover: rgba(255,255,255,0.07);
+      --border:      rgba(255,255,255,0.08);
+      --border-glow: rgba(100,200,255,0.25);
+      --text-primary: #f0f0ff;
+      --text-secondary: #8888aa;
+      --text-muted:  #555577;
+      --accent:      #4fc3f7;
+      --accent-2:    #7c4dff;
+      --accent-3:    #00e5ff;
+      --success:     #00e676;
+      --warning:     #ffab40;
+      --danger:      #ff5252;
+      --gradient-hero: linear-gradient(135deg, #0a0a14 0%, #0d1a2e 50%, #0a0a14 100%);
+      --gradient-accent: linear-gradient(135deg, #4fc3f7, #7c4dff);
+      --gradient-island: linear-gradient(135deg, #00b4d8, #0077b6);
+      --radius-sm:   8px;
+      --radius-md:   16px;
+      --radius-lg:   24px;
+      --radius-xl:   32px;
+      --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+      --shadow-glow: 0 0 40px rgba(79,195,247,0.15);
+      --nav-height:  64px;
+      --bottom-nav:  72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    #app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ============================================================
+       ANIMATED BACKGROUND
+    ============================================================ */
+    .bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .bg-canvas canvas { width: 100%; height: 100%; }
+
+    /* ============================================================
+       SCREENS
+    ============================================================ */
+    .screen {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+      position: relative;
+      z-index: 1;
+    }
+    .screen.active { display: flex; }
+
+    /* ============================================================
+       AUTH SCREEN
+    ============================================================ */
+    .auth-screen {
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(ellipse at 50% 30%, rgba(79,195,247,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 80%, rgba(124,77,255,0.06) 0%, transparent 50%),
+                  var(--bg-deep);
+    }
+
+    .auth-logo {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .auth-logo .wordmark {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -2px;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .auth-logo .tagline {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-card), var(--shadow-glow);
+    }
+
+    .auth-card h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .auth-card .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      font-size: 16px;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,195,247,0.12);
+    }
+    .form-group input::placeholder { color: var(--text-muted); }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: #1a1a2e; }
+    .form-group textarea { resize: vertical; min-height: 80px; }
+
+    /* OTP input */
+    .otp-inputs {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .otp-inputs input {
+      width: 52px;
+      height: 60px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .otp-inputs input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,195,247,0.12);
+    }
+
+    /* ============================================================
+       BUTTONS
+    ============================================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-primary {
+      background: var(--gradient-accent);
+      color: white;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(79,195,247,0.3);
+    }
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(79,195,247,0.4);
+    }
+    .btn-primary:active:not(:disabled) { transform: translateY(0); }
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      width: 100%;
+    }
+    .btn-secondary:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      padding: 8px 12px;
+    }
+    .btn-ghost:hover { background: rgba(79,195,247,0.08); }
+    .btn-danger {
+      background: rgba(255,82,82,0.15);
+      border: 1px solid rgba(255,82,82,0.3);
+      color: var(--danger);
+    }
+    .btn-icon {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
+    .btn-icon:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+    .btn-sm { padding: 8px 16px; font-size: 13px; }
+    .btn-loading { position: relative; color: transparent !important; }
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* ============================================================
+       TOP NAV
+    ============================================================ */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background: rgba(10,10,20,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -1px;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .nav-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gradient-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: white;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s;
+    }
+    .nav-avatar:hover { border-color: var(--accent); }
+
+    /* ============================================================
+       BOTTOM NAV
+    ============================================================ */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      z-index: 100;
+      height: var(--bottom-nav);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      background: rgba(10,10,20,0.92);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 16px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: color 0.2s;
+      border: none;
+      background: none;
+      font-family: inherit;
+      min-width: 64px;
+    }
+    .nav-item.active { color: var(--accent); }
+    .nav-item:hover { color: var(--text-secondary); }
+    .nav-item svg { width: 22px; height: 22px; }
+    .nav-item span { font-size: 10px; font-weight: 600; letter-spacing: 0.3px; }
+
+    /* ============================================================
+       MAIN CONTENT AREA
+    ============================================================ */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: calc(var(--bottom-nav) + 16px);
+    }
+
+    /* ============================================================
+       EXPLORE SCREEN
+    ============================================================ */
+    .explore-hero {
+      padding: 28px 20px 20px;
+    }
+    .explore-hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .explore-hero p { font-size: 14px; color: var(--text-secondary); }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 12px 16px;
+      margin: 16px 20px;
+    }
+    .search-bar svg { color: var(--text-muted); flex-shrink: 0; width: 18px; height: 18px; }
+    .search-bar input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 15px;
+      color: var(--text-primary);
+      font-family: inherit;
+    }
+    .search-bar input::placeholder { color: var(--text-muted); }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tab {
+      flex-shrink: 0;
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .filter-tab.active {
+      background: var(--gradient-accent);
+      border-color: transparent;
+      color: white;
+    }
+    .filter-tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px 12px;
+    }
+    .section-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .section-header a {
+      font-size: 13px;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    /* ============================================================
+       ISLAND CARDS
+    ============================================================ */
+    .islands-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      padding: 0 20px 16px;
+    }
+    .island-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .island-card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(79,195,247,0.2);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card);
+    }
+    .island-card-thumb {
+      aspect-ratio: 4/3;
+      position: relative;
+      overflow: hidden;
+    }
+    .island-card-thumb .biome-bg {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+    }
+    .island-card-thumb .biome-bg.tropical { background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%); }
+    .island-card-thumb .biome-bg.arctic   { background: linear-gradient(135deg, #caf0f8 0%, #90e0ef 100%); }
+    .island-card-thumb .biome-bg.desert   { background: linear-gradient(135deg, #f4a261 0%, #e76f51 100%); }
+    .island-card-thumb .biome-bg.forest   { background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 100%); }
+    .island-card-thumb .biome-bg.volcanic { background: linear-gradient(135deg, #e63946 0%, #9d0208 100%); }
+    .island-card-thumb .biome-bg.crystal  { background: linear-gradient(135deg, #7c4dff 0%, #4fc3f7 100%); }
+    .island-card-thumb .biome-bg.cloud    { background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%); }
+    .island-card-thumb .biome-bg.underwater { background: linear-gradient(135deg, #023e8a 0%, #0077b6 100%); }
+    .island-card-thumb .island-badge {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 100px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: white;
+    }
+    .island-card-body { padding: 12px; }
+    .island-card-body h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .island-card-body .owner {
+      font-size: 11px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .island-card-stats {
+      display: flex;
+      gap: 10px;
+    }
+    .island-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    .island-stat svg { width: 12px; height: 12px; }
+
+    /* Full-width island card for featured */
+    .islands-list { padding: 0 20px 16px; display: flex; flex-direction: column; gap: 12px; }
+    .island-card-wide {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: flex;
+    }
+    .island-card-wide:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(79,195,247,0.2);
+      box-shadow: var(--shadow-card);
+    }
+    .island-card-wide .biome-bg {
+      width: 90px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+    }
+    .island-card-wide .island-card-body { flex: 1; padding: 14px; }
+    .island-card-wide .island-card-body h3 { font-size: 16px; margin-bottom: 4px; }
+    .island-card-wide .island-card-body .desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .island-card-wide .island-card-body .tags {
+      display: flex; flex-wrap: wrap; gap: 4px;
+    }
+    .tag {
+      padding: 2px 8px;
+      background: rgba(79,195,247,0.1);
+      border: 1px solid rgba(79,195,247,0.2);
+      border-radius: 100px;
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    /* ============================================================
+       CREATE ISLAND SCREEN
+    ============================================================ */
+    .create-screen {
+      padding: 24px 20px;
+    }
+    .create-screen h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+    .create-screen .subtitle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .biome-picker {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .biome-option {
+      aspect-ratio: 1;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .biome-option.selected { border-color: var(--accent); }
+    .biome-option.selected::after {
+      content: '✓';
+      position: absolute;
+      top: 4px; right: 6px;
+      font-size: 12px;
+      color: white;
+      font-weight: 700;
+    }
+    .biome-option span { font-size: 10px; font-weight: 600; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.5); }
+    .biome-option .emoji { font-size: 24px; }
+
+    .visibility-options {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .visibility-option {
+      flex: 1;
+      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .visibility-option.selected {
+      border-color: var(--accent);
+      background: rgba(79,195,247,0.08);
+    }
+    .visibility-option .icon { font-size: 20px; margin-bottom: 4px; }
+    .visibility-option .label { font-size: 12px; font-weight: 600; }
+    .visibility-option .desc { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+    /* ============================================================
+       PROFILE SCREEN
+    ============================================================ */
+    .profile-header {
+      position: relative;
+      padding-bottom: 20px;
+    }
+    .profile-banner {
+      height: 140px;
+      background: linear-gradient(135deg, #0d1a2e 0%, #1a0d2e 100%);
+      position: relative;
+    }
+    .profile-banner-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, var(--bg-base) 100%);
+    }
+    .profile-avatar-wrap {
+      position: absolute;
+      bottom: -40px;
+      left: 20px;
+    }
+    .profile-avatar {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: var(--gradient-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 800; color: white;
+      border: 3px solid var(--bg-base);
+    }
+    .profile-info {
+      padding: 52px 20px 0;
+    }
+    .profile-info h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .profile-info .handle {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+    .profile-info .bio {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .profile-stats {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+    .profile-stat { text-align: center; }
+    .profile-stat .value {
+      font-size: 20px;
+      font-weight: 700;
+      display: block;
+    }
+    .profile-stat .label {
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+    .profile-actions { display: flex; gap: 8px; }
+
+    /* ============================================================
+       ISLAND DETAIL MODAL
+    ============================================================ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-sheet {
+      width: 100%;
+      max-width: 600px;
+      background: #12121f;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+    .modal-handle {
+      width: 36px; height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin: 12px auto 0;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+    }
+    .modal-header h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .modal-body { padding: 0 20px 32px; }
+    .modal-biome-hero {
+      height: 160px;
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+    .modal-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .modal-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .meta-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+    }
+    .meta-item .meta-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .meta-item .meta-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    /* ============================================================
+       TOAST NOTIFICATIONS
+    ============================================================ */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+      width: calc(100% - 40px);
+      max-width: 400px;
+    }
+    .toast {
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.3s ease;
+      pointer-events: auto;
+    }
+    .toast.success { background: rgba(0,230,118,0.15); border: 1px solid rgba(0,230,118,0.3); color: var(--success); }
+    .toast.error   { background: rgba(255,82,82,0.15);  border: 1px solid rgba(255,82,82,0.3);  color: var(--danger); }
+    .toast.info    { background: rgba(79,195,247,0.15); border: 1px solid rgba(79,195,247,0.3); color: var(--accent); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       LOADING STATES
+    ============================================================ */
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(79,195,247,0.2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 40px auto;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--radius-md);
+    }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .empty-state .icon { font-size: 48px; margin-bottom: 16px; }
+    .empty-state h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+    .empty-state p { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; }
+
+    /* ============================================================
+       ONBOARDING / PROFILE SETUP
+    ============================================================ */
+    .onboarding-screen {
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: radial-gradient(ellipse at 50% 30%, rgba(124,77,255,0.1) 0%, transparent 60%),
+                  var(--bg-deep);
+    }
+    .onboarding-card {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      backdrop-filter: blur(20px);
+    }
+    .onboarding-step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+    .step-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+    .step-dot.active { background: var(--accent); }
+
+    /* ============================================================
+       DIVIDER
+    ============================================================ */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ============================================================
+       LIKE BUTTON
+    ============================================================ */
+    .like-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+    .like-btn.liked {
+      border-color: rgba(255,82,82,0.4);
+      background: rgba(255,82,82,0.1);
+      color: #ff5252;
+    }
+    .like-btn svg { width: 16px; height: 16px; }
+
+    /* ============================================================
+       FEED SCREEN
+    ============================================================ */
+    .feed-item {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .feed-item-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .feed-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--gradient-accent);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+    .feed-user { font-size: 14px; font-weight: 600; }
+    .feed-time { font-size: 12px; color: var(--text-muted); }
+    .feed-action { font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (min-width: 600px) {
+      .islands-grid { grid-template-columns: repeat(3, 1fr); }
+      .auth-screen, .onboarding-screen { background-attachment: fixed; }
+      .bottom-nav { max-width: 600px; left: 50%; transform: translateX(-50%); border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+      .top-nav { max-width: 600px; left: 50%; transform: translateX(-50%); border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+    }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
+    .hidden { display: none !important; }
+    .text-center { text-align: center; }
+    .text-accent { color: var(--accent); }
+    .text-muted { color: var(--text-muted); }
+    .text-sm { font-size: 13px; }
+    .mt-4 { margin-top: 4px; }
+    .mt-8 { margin-top: 8px; }
+    .mt-16 { margin-top: 16px; }
+    .mt-24 { margin-top: 24px; }
+    .mb-16 { margin-bottom: 16px; }
+    .p-20 { padding: 0 20px; }
+    .gap-8 { gap: 8px; }
+    .flex { display: flex; }
+    .flex-col { flex-direction: column; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .w-full { width: 100%; }
+    .resend-link {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 16px;
+    }
+    .resend-link a {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .resend-link a:hover { text-decoration: underline; }
+    .phone-display {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .island-card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px 12px;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Animated Background -->
+  <div class="bg-canvas">
+    <canvas id="bgCanvas"></canvas>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ============================================================
+       SCREEN: AUTH (Phone Entry)
+  ============================================================ -->
+  <div class="screen auth-screen active" id="screenAuth">
+    <div class="auth-logo">
+      <div class="wordmark">ISLYR</div>
+      <div class="tagline">Your island. Your world.</div>
+    </div>
+    <div class="auth-card">
+      <h2>Welcome back</h2>
+      <p class="subtitle">Enter your phone number to continue</p>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phoneInput" placeholder="+1 (555) 000-0000" autocomplete="tel" inputmode="tel" />
+      </div>
+      <button class="btn btn-primary" id="btnSendOtp">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.69h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.1a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17.5z"/></svg>
+        Send Code
+      </button>
+      <p class="text-center text-sm text-muted mt-16">
+        By continuing you agree to our Terms of Service
+      </p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: OTP VERIFICATION
+  ============================================================ -->
+  <div class="screen auth-screen" id="screenOtp">
+    <div class="auth-logo">
+      <div class="wordmark">ISLYR</div>
+    </div>
+    <div class="auth-card">
+      <h2>Enter your code</h2>
+      <p class="subtitle">We sent a 6-digit code to <span class="phone-display" id="otpPhoneDisplay"></span></p>
+      <div class="otp-inputs">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit" data-index="0" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit" data-index="1" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit" data-index="2" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit" data-index="3" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit" data-index="4" />
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="otp-digit" data-index="5" />
+      </div>
+      <button class="btn btn-primary" id="btnVerifyOtp">Verify &amp; Continue</button>
+      <div class="resend-link">
+        Didn't receive it? <a id="btnResendOtp">Resend code</a>
+      </div>
+      <div class="resend-link mt-8">
+        <a id="btnBackToPhone">← Change number</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: ONBOARDING (New User Profile Setup)
+  ============================================================ -->
+  <div class="screen onboarding-screen" id="screenOnboarding">
+    <div class="onboarding-card">
+      <div class="onboarding-step">
+        <div class="step-dot active"></div>
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+      </div>
+      <h2 style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;margin-bottom:8px;">Set up your profile</h2>
+      <p class="subtitle" style="font-size:14px;color:var(--text-secondary);margin-bottom:24px;">Tell the ISLYR community who you are</p>
+      <div class="form-group">
+        <label>Display Name</label>
+        <input type="text" id="displayNameInput" placeholder="Your name" maxlength="50" />
+      </div>
+      <div class="form-group">
+        <label>Bio <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
+        <textarea id="bioInput" placeholder="Tell us about yourself..." maxlength="500"></textarea>
+      </div>
+      <button class="btn btn-primary" id="btnCreateProfile">
+        Create Profile &amp; Enter ISLYR
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCREEN: MAIN APP (with bottom nav)
+  ============================================================ -->
+  <div class="screen" id="screenApp">
+
+    <!-- Top Nav -->
+    <nav class="top-nav">
+      <div class="nav-logo">ISLYR</div>
+      <div class="nav-actions">
+        <button class="btn-icon btn" id="btnNotifications" title="Notifications">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        </button>
+        <div class="nav-avatar" id="navAvatar" onclick="showScreen('screenProfile')"></div>
+      </div>
+    </nav>
+
+    <!-- Tab Content -->
+    <div class="main-content" id="mainContent">
+
+      <!-- TAB: EXPLORE -->
+      <div id="tabExplore">
+        <div class="explore-hero">
+          <h1>Explore Islands</h1>
+          <p>Discover breathtaking virtual worlds</p>
+        </div>
+
+        <div class="search-bar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search islands, biomes, creators..." />
+        </div>
+
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="tropical">🌴 Tropical</button>
+          <button class="filter-tab" data-filter="crystal">💎 Crystal</button>
+          <button class="filter-tab" data-filter="forest">🌲 Forest</button>
+          <button class="filter-tab" data-filter="volcanic">🌋 Volcanic</button>
+          <button class="filter-tab" data-filter="arctic">❄️ Arctic</button>
+          <button class="filter-tab" data-filter="desert">🏜️ Desert</button>
+          <button class="filter-tab" data-filter="underwater">🌊 Underwater</button>
+          <button class="filter-tab" data-filter="cloud">☁️ Cloud</button>
+        </div>
+
+        <div class="section-header">
+          <h2>⭐ Featured</h2>
+        </div>
+        <div id="featuredIslands" class="islands-list">
+          <div class="spinner"></div>
+        </div>
+
+        <div class="section-header">
+          <h2>🌍 All Islands</h2>
+          <a onclick="loadAllIslands()">See all</a>
+        </div>
+        <div id="allIslands" class="islands-grid">
+          <div class="spinner" style="grid-column:1/-1"></div>
+        </div>
+      </div>
+
+      <!-- TAB: CREATE -->
+      <div id="tabCreate" class="hidden">
+        <div class="create-screen">
+          <h1>Create Island</h1>
+          <p class="subtitle">Build your own virtual world</p>
+
+          <div class="form-group">
+            <label>Island Name *</label>
+            <input type="text" id="islandName" placeholder="e.g. Crystal Cove" maxlength="100" />
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="islandDesc" placeholder="Describe your island..." maxlength="1000"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Biome</label>
+            <div class="biome-picker" id="biomePicker">
+              <div class="biome-option tropical selected" data-biome="tropical">
+                <span class="emoji">🌴</span>
+                <span>Tropical</span>
+              </div>
+              <div class="biome-option arctic" data-biome="arctic">
+                <span class="emoji">❄️</span>
+                <span>Arctic</span>
+              </div>
+              <div class="biome-option desert" data-biome="desert">
+                <span class="emoji">🏜️</span>
+                <span>Desert</span>
+              </div>
+              <div class="biome-option forest" data-biome="forest">
+                <span class="emoji">🌲</span>
+                <span>Forest</span>
+              </div>
+              <div class="biome-option volcanic" data-biome="volcanic">
+                <span class="emoji">🌋</span>
+                <span>Volcanic</span>
+              </div>
+              <div class="biome-option crystal" data-biome="crystal">
+                <span class="emoji">💎</span>
+                <span>Crystal</span>
+              </div>
+              <div class="biome-option cloud" data-biome="cloud">
+                <span class="emoji">☁️</span>
+                <span>Cloud</span>
+              </div>
+              <div class="biome-option underwater" data-biome="underwater">
+                <span class="emoji">🌊</span>
+                <span>Ocean</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Visibility</label>
+            <div class="visibility-options" id="visibilityOptions">
+              <div class="visibility-option selected" data-visibility="public">
+                <div class="icon">🌍</div>
+                <div class="label">Public</div>
+                <div class="desc">Anyone can visit</div>
+              </div>
+              <div class="visibility-option" data-visibility="friends_only">
+                <div class="icon">👥</div>
+                <div class="label">Friends</div>
+                <div class="desc">Followers only</div>
+              </div>
+              <div class="visibility-option" data-visibility="private">
+                <div class="icon">🔒</div>
+                <div class="label">Private</div>
+                <div class="desc">Only you</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tags <span style="color:var(--text-muted);font-weight:400">(comma separated)</span></label>
+            <input type="text" id="islandTags" placeholder="e.g. beach, chill, music" />
+          </div>
+
+          <button class="btn btn-primary" id="btnCreateIsland" style="margin-top:8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            Create Island
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB: FEED -->
+      <div id="tabFeed" class="hidden">
+        <div class="explore-hero">
+          <h1>Your Feed</h1>
+          <p>Activity from islands you follow</p>
+        </div>
+        <div id="feedContent">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- TAB: PROFILE -->
+      <div id="tabProfile" class="hidden">
+        <div class="profile-header">
+          <div class="profile-banner">
+            <div class="profile-banner-overlay"></div>
+          </div>
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profileAvatarLarge"></div>
+          </div>
+        </div>
+        <div class="profile-info">
+          <h1 id="profileDisplayName">Loading...</h1>
+          <div class="handle" id="profileHandle"></div>
+          <div class="bio" id="profileBio"></div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span class="value" id="profileIslandCount">0</span>
+              <span class="label">Islands</span>
+            </div>
+            <div class="profile-stat">
+              <span class="value" id="profileFollowers">0</span>
+              <span class="label">Followers</span>
+            </div>
+            <div class="profile-stat">
+              <span class="value" id="profileFollowing">0</span>
+              <span class="label">Following</span>
+            </div>
+          </div>
+          <div class="profile-actions">
+            <button class="btn btn-secondary" id="btnEditProfile" style="flex:1">Edit Profile</button>
+            <button class="btn btn-danger btn-sm" id="btnLogout">Sign Out</button>
+          </div>
+        </div>
+
+        <div class="section-header mt-16">
+          <h2>My Islands</h2>
+          <a onclick="switchTab('tabCreate')">+ New</a>
+        </div>
+        <div id="myIslands" class="islands-grid">
+          <div class="spinner" style="grid-column:1/-1"></div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-item active" data-tab="tabExplore" onclick="switchTab('tabExplore')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Explore</span>
+      </button>
+      <button class="nav-item" data-tab="tabFeed" onclick="switchTab('tabFeed')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Feed</span>
+      </button>
+      <button class="nav-item" data-tab="tabCreate" onclick="switchTab('tabCreate')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+        <span>Create</span>
+      </button>
+      <button class="nav-item" data-tab="tabProfile" onclick="switchTab('tabProfile')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+
+  </div><!-- /screenApp -->
+
+  <!-- ============================================================
+       ISLAND DETAIL MODAL
+  ============================================================ -->
+  <div class="modal-overlay" id="islandModal" onclick="closeIslandModal(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h2 id="modalIslandName">Island Name</h2>
+        <button class="btn btn-icon" onclick="closeIslandModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-biome-hero" id="modalBiomeHero"></div>
+        <p class="modal-desc" id="modalIslandDesc"></p>
+        <div class="modal-meta">
+          <div class="meta-item">
+            <div class="meta-label">Biome</div>
+            <div class="meta-value" id="modalBiome"></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Visitors</div>
+            <div class="meta-value" id="modalVisitors"></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Owner</div>
+            <div class="meta-value" id="modalOwner"></div>
+          </div>
+          <div class="meta-item">
+            <div class="meta-label">Status</div>
+            <div class="meta-value" id="modalStatus"></div>
+          </div>
+        </div>
+        <div id="modalTags" style="margin-bottom:20px;display:flex;flex-wrap:wrap;gap:6px;"></div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-primary" id="modalVisitBtn" style="flex:1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            Visit Island
+          </button>
+          <button class="like-btn" id="modalLikeBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            <span id="modalLikeCount">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       EDIT PROFILE MODAL
+  ============================================================ -->
+  <div class="modal-overlay" id="editProfileModal" onclick="closeEditProfileModal(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-header">
+        <h2>Edit Profile</h2>
+        <button class="btn btn-icon" onclick="closeEditProfileModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="editDisplayName" maxlength="50" />
+        </div>
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea id="editBio" maxlength="500"></textarea>
+        </div>
+        <button class="btn btn-primary" id="btnSaveProfile">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// ============================================================
+// ISLYR APP — Core JavaScript
+// ============================================================
+
+const API = 'http://151.241.228.235:4000/api/v1';
+let authToken = localStorage.getItem('islyr_token') || null;
+let currentUser = JSON.parse(localStorage.getItem('islyr_user') || 'null');
+let currentPhone = '';
+let selectedBiome = 'tropical';
+let selectedVisibility = 'public';
+let currentIslandId = null;
+let allIslandsData = [];
+let currentFilter = 'all';
+
+// ============================================================
+// BIOME CONFIG
+// ============================================================
+const BIOME_EMOJI = {
+  tropical: '🌴', arctic: '❄️', desert: '🏜️', forest: '🌲',
+  volcanic: '🌋', crystal: '💎', cloud: '☁️', underwater: '🌊'
+};
+const BIOME_LABEL = {
+  tropical: 'Tropical', arctic: 'Arctic', desert: 'Desert', forest: 'Forest',
+  volcanic: 'Volcanic', crystal: 'Crystal', cloud: 'Cloud', underwater: 'Underwater'
+};
+
+// ============================================================
+// ANIMATED BACKGROUND
+// ============================================================
+(function initBg() {
+  const canvas = document.getElementById('bgCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function createParticle() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.15,
+      vy: (Math.random() - 0.5) * 0.15,
+      alpha: Math.random() * 0.5 + 0.1
+    };
+  }
+
+  function init() {
+    resize();
+    particles = Array.from({length: 120}, createParticle);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(79,195,247,${p.alpha})`;
+      ctx.fill();
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > W) p.vx *= -1;
+      if (p.y < 0 || p.y > H) p.vy *= -1;
+    });
+    // Draw faint connections
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(79,195,247,${0.04 * (1 - dist/100)})`;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
+})();
+
+// ============================================================
+// UTILITIES
+// ============================================================
+function showToast(msg, type = 'info', duration = 3500) {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  t.innerHTML = `<span>${icons[type] || 'ℹ'}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transition = 'opacity 0.3s'; setTimeout(() => t.remove(), 300); }, duration);
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function switchTab(tabId) {
+  document.querySelectorAll('#mainContent > div').forEach(t => t.classList.add('hidden'));
+  document.getElementById(tabId).classList.remove('hidden');
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.tab === tabId);
+  });
+  if (tabId === 'tabExplore') loadExplore();
+  if (tabId === 'tabFeed') loadFeed();
+  if (tabId === 'tabProfile') loadProfile();
+}
+
+async function apiCall(method, path, body = null, auth = true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (auth && authToken) headers['Authorization'] = `Bearer ${authToken}`;
+  const opts = { method, headers };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(`${API}${path}`, opts);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.detail || `Error ${res.status}`);
+  return data;
+}
+
+function getInitials(name) {
+  if (!name) return '?';
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : ''; }
+
+// ============================================================
+// AUTH FLOW
+// ============================================================
+document.getElementById('phoneInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendOtp();
+});
+
+document.getElementById('btnSendOtp').addEventListener('click', sendOtp);
+
+async function sendOtp() {
+  const phone = document.getElementById('phoneInput').value.trim();
+  if (!phone || phone.length < 10) { showToast('Please enter a valid phone number', 'error'); return; }
+  const btn = document.getElementById('btnSendOtp');
+  btn.classList.add('btn-loading');
+  btn.disabled = true;
+  try {
+    await apiCall('POST', '/auth/send-otp', { phone }, false);
+    currentPhone = phone;
+    document.getElementById('otpPhoneDisplay').textContent = phone;
+    showScreen('screenOtp');
+    setTimeout(() => document.querySelector('.otp-digit').focus(), 100);
+    showToast('Code sent! Check your SMS', 'success');
+  } catch(e) {
+    showToast(e.message || 'Failed to send code', 'error');
+  } finally {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+  }
+}
+
+// OTP digit input handling
+document.querySelectorAll('.otp-digit').forEach((input, i, all) => {
+  input.addEventListener('input', e => {
+    const val = e.target.value.replace(/\D/g, '');
+    e.target.value = val;
+    if (val && i < all.length - 1) all[i + 1].focus();
+    if (getOtpValue().length === 6) verifyOtp();
+  });
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Backspace' && !e.target.value && i > 0) all[i - 1].focus();
+    if (e.key === 'Enter') verifyOtp();
+  });
+  input.addEventListener('paste', e => {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g, '').slice(0, 6);
+    [...text].forEach((c, j) => { if (all[j]) all[j].value = c; });
+    if (all[text.length - 1]) all[text.length - 1].focus();
+    if (text.length === 6) setTimeout(verifyOtp, 100);
+  });
+});
+
+function getOtpValue() {
+  return [...document.querySelectorAll('.otp-digit')].map(i => i.value).join('');
+}
+
+document.getElementById('btnVerifyOtp').addEventListener('click', verifyOtp);
+
+async function verifyOtp() {
+  const code = getOtpValue();
+  if (code.length < 4) { showToast('Enter the full code', 'error'); return; }
+  const btn = document.getElementById('btnVerifyOtp');
+  btn.classList.add('btn-loading');
+  btn.disabled = true;
+  try {
+    const data = await apiCall('POST', '/auth/verify-otp', { phone: currentPhone, code }, false);
+    authToken = data.token;
+    currentUser = data.user;
+    localStorage.setItem('islyr_token', authToken);
+    localStorage.setItem('islyr_user', JSON.stringify(currentUser));
+    if (data.is_new) {
+      showScreen('screenOnboarding');
+    } else {
+      enterApp();
+    }
+  } catch(e) {
+    showToast(e.message || 'Invalid code', 'error');
+    document.querySelectorAll('.otp-digit').forEach(i => i.value = '');
+    document.querySelector('.otp-digit').focus();
+  } finally {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+  }
+}
+
+document.getElementById('btnResendOtp').addEventListener('click', async () => {
+  try {
+    await apiCall('POST', '/auth/send-otp', { phone: currentPhone }, false);
+    showToast('New code sent!', 'success');
+    document.querySelectorAll('.otp-digit').forEach(i => i.value = '');
+    document.querySelector('.otp-digit').focus();
+  } catch(e) {
+    showToast(e.message || 'Failed to resend', 'error');
+  }
+});
+
+document.getElementById('btnBackToPhone').addEventListener('click', () => {
+  showScreen('screenAuth');
+  document.querySelectorAll('.otp-digit').forEach(i => i.value = '');
+});
+
+// ============================================================
+// ONBOARDING
+// ============================================================
+document.getElementById('btnCreateProfile').addEventListener('click', async () => {
+  const displayName = document.getElementById('displayNameInput').value.trim();
+  const bio = document.getElementById('bioInput').value.trim();
+  if (!displayName || displayName.length < 2) { showToast('Please enter a display name (min 2 chars)', 'error'); return; }
+  const btn = document.getElementById('btnCreateProfile');
+  btn.classList.add('btn-loading');
+  btn.disabled = true;
+  try {
+    const profile = await apiCall('POST', '/profiles/', { display_name: displayName, bio: bio || null });
+    currentUser = { ...currentUser, display_name: displayName, bio };
+    localStorage.setItem('islyr_user', JSON.stringify(currentUser));
+    showToast('Welcome to ISLYR! 🌴', 'success');
+    enterApp();
+  } catch(e) {
+    showToast(e.message || 'Failed to create profile', 'error');
+  } finally {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+  }
+});
+
+// ============================================================
+// ENTER APP
+// ============================================================
+function enterApp() {
+  showScreen('screenApp');
+  updateNavAvatar();
+  switchTab('tabExplore');
+}
+
+function updateNavAvatar() {
+  const el = document.getElementById('navAvatar');
+  const name = currentUser?.display_name || currentUser?.phone || '?';
+  el.textContent = getInitials(name);
+}
+
+// ============================================================
+// EXPLORE / ISLANDS
+// ============================================================
+async function loadExplore() {
+  loadFeaturedIslands();
+  loadAllIslands();
+}
+
+async function loadFeaturedIslands() {
+  const container = document.getElementById('featuredIslands');
+  try {
+    const data = await apiCall('GET', '/islands/featured', null, false);
+    allIslandsData = data.islands || [];
+    renderFeaturedIslands(data.islands || []);
+  } catch(e) {
+    container.innerHTML = '<p class="text-muted p-20">Could not load featured islands</p>';
+  }
+}
+
+function renderFeaturedIslands(islands) {
+  const container = document.getElementById('featuredIslands');
+  if (!islands.length) {
+    container.innerHTML = '<div class="empty-state"><div class="icon">🏝️</div><h3>No islands yet</h3><p>Be the first to create one!</p></div>';
+    return;
+  }
+  container.innerHTML = islands.map(island => `
+    <div class="island-card-wide" onclick="openIslandModal(${island.id})">
+      <div class="biome-bg ${island.biome}">${BIOME_EMOJI[island.biome] || '🏝️'}</div>
+      <div class="island-card-body">
+        <h3>${escHtml(island.name)}</h3>
+        <div class="desc">${escHtml(island.description || 'No description')}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div class="owner">by ${escHtml(island.owner_name || 'Unknown')}</div>
+          <div class="island-card-stats">
+            <div class="island-stat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              ${island.likeCount || 0}
+            </div>
+            <div class="island-stat">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              ${island.visitorCount || 0}
+            </div>
+          </div>
+        </div>
+        ${island.tags && island.tags.length ? `<div class="tags">${island.tags.slice(0,3).map(t => `<span class="tag">${escHtml(t)}</span>`).join('')}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function loadAllIslands() {
+  const container = document.getElementById('allIslands');
+  try {
+    const data = await apiCall('GET', '/islands/', null, false);
+    allIslandsData = data.islands || [];
+    renderIslandsGrid(data.islands || [], container);
+  } catch(e) {
+    container.innerHTML = '<p class="text-muted" style="grid-column:1/-1;padding:20px">Could not load islands</p>';
+  }
+}
+
+function renderIslandsGrid(islands, container) {
+  const filtered = currentFilter === 'all' ? islands : islands.filter(i => i.biome === currentFilter);
+  if (!filtered.length) {
+    container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🏝️</div><h3>No islands found</h3><p>Try a different filter</p></div>`;
+    return;
+  }
+  container.innerHTML = filtered.map(island => `
+    <div class="island-card" onclick="openIslandModal(${island.id})">
+      <div class="island-card-thumb">
+        <div class="biome-bg ${island.biome}">${BIOME_EMOJI[island.biome] || '🏝️'}</div>
+        <div class="island-badge">${BIOME_LABEL[island.biome] || island.biome}</div>
+      </div>
+      <div class="island-card-body">
+        <h3>${escHtml(island.name)}</h3>
+        <div class="owner">by ${escHtml(island.owner_name || 'Unknown')}</div>
+        <div class="island-card-stats">
+          <div class="island-stat">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${island.likeCount || 0}
+          </div>
+          <div class="island-stat">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            ${island.visitorCount || 0}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Filter tabs
+document.getElementById('filterTabs').addEventListener('click', e => {
+  const tab = e.target.closest('.filter-tab');
+  if (!tab) return;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  currentFilter = tab.dataset.filter;
+  renderIslandsGrid(allIslandsData, document.getElementById('allIslands'));
+});
+
+// Search
+let searchTimeout;
+document.getElementById('searchInput').addEventListener('input', e => {
+  clearTimeout(searchTimeout);
+  searchTimeout = setTimeout(() => {
+    const q = e.target.value.toLowerCase().trim();
+    if (!q) {
+      renderIslandsGrid(allIslandsData, document.getElementById('allIslands'));
+      return;
+    }
+    const filtered = allIslandsData.filter(i =>
+      i.name.toLowerCase().includes(q) ||
+      (i.description || '').toLowerCase().includes(q) ||
+      (i.owner_name || '').toLowerCase().includes(q) ||
+      (i.tags || []).some(t => t.toLowerCase().includes(q))
+    );
+    renderIslandsGrid(filtered, document.getElementById('allIslands'));
+  }, 300);
+});
+
+// ============================================================
+// ISLAND MODAL
+// ============================================================
+async function openIslandModal(islandId) {
+  currentIslandId = islandId;
+  const modal = document.getElementById('islandModal');
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Find island in cache or fetch
+  let island = allIslandsData.find(i => i.id === islandId);
+  if (!island) {
+    try { island = await apiCall('GET', `/islands/${islandId}`, null, false); }
+    catch(e) { showToast('Could not load island', 'error'); return; }
+  }
+
+  document.getElementById('modalIslandName').textContent = island.name;
+  document.getElementById('modalIslandDesc').textContent = island.description || 'No description provided.';
+  document.getElementById('modalBiome').textContent = `${BIOME_EMOJI[island.biome] || ''} ${BIOME_LABEL[island.biome] || island.biome}`;
+  document.getElementById('modalVisitors').textContent = island.visitorCount || 0;
+  document.getElementById('modalOwner').textContent = island.owner_name || 'Unknown';
+  document.getElementById('modalStatus').textContent = capitalize(island.status || 'building');
+  document.getElementById('modalLikeCount').textContent = island.likeCount || 0;
+
+  const hero = document.getElementById('modalBiomeHero');
+  hero.className = `modal-biome-hero biome-bg ${island.biome}`;
+  hero.textContent = BIOME_EMOJI[island.biome] || '🏝️';
+
+  const tagsEl = document.getElementById('modalTags');
+  tagsEl.innerHTML = (island.tags || []).map(t => `<span class="tag">${escHtml(t)}</span>`).join('');
+}
+
+function closeIslandModal(e) {
+  if (e && e.target !== document.getElementById('islandModal')) return;
+  document.getElementById('islandModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modalVisitBtn').addEventListener('click', async () => {
+  if (!currentIslandId) return;
+  if (!authToken) { showToast('Sign in to visit islands', 'error'); return; }
+  try {
+    await apiCall('POST', `/islands/${currentIslandId}/visit`);
+    showToast('Visiting island! 🏝️', 'success');
+    document.getElementById('islandModal').classList.remove('active');
+    document.body.style.overflow = '';
+  } catch(e) {
+    showToast(e.message || 'Could not visit island', 'error');
+  }
+});
+
+document.getElementById('modalLikeBtn').addEventListener('click', async () => {
+  if (!authToken) { showToast('Sign in to like islands', 'error'); return; }
+  const btn = document.getElementById('modalLikeBtn');
+  const countEl = document.getElementById('modalLikeCount');
+  const liked = btn.classList.contains('liked');
+  try {
+    if (liked) {
+      await apiCall('DELETE', `/social/like/${currentIslandId}`);
+      btn.classList.remove('liked');
+      countEl.textContent = Math.max(0, parseInt(countEl.textContent) - 1);
+    } else {
+      await apiCall('POST', `/social/like/${currentIslandId}`);
+      btn.classList.add('liked');
+      countEl.textContent = parseInt(countEl.textContent) + 1;
+    }
+  } catch(e) {
+    showToast(e.message || 'Action failed', 'error');
+  }
+});
+
+// ============================================================
+// CREATE ISLAND
+// ============================================================
+document.getElementById('biomePicker').addEventListener('click', e => {
+  const opt = e.target.closest('.biome-option');
+  if (!opt) return;
+  document.querySelectorAll('.biome-option').forEach(o => o.classList.remove('selected'));
+  opt.classList.add('selected');
+  selectedBiome = opt.dataset.biome;
+});
+
+document.getElementById('visibilityOptions').addEventListener('click', e => {
+  const opt = e.target.closest('.visibility-option');
+  if (!opt) return;
+  document.querySelectorAll('.visibility-option').forEach(o => o.classList.remove('selected'));
+  opt.classList.add('selected');
+  selectedVisibility = opt.dataset.visibility;
+});
+
+document.getElementById('btnCreateIsland').addEventListener('click', async () => {
+  if (!authToken) { showToast('Please sign in first', 'error'); return; }
+  const name = document.getElementById('islandName').value.trim();
+  const description = document.getElementById('islandDesc').value.trim();
+  const tagsRaw = document.getElementById('islandTags').value.trim();
+  const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean).join(',') : null;
+
+  if (!name || name.length < 2) { showToast('Island name must be at least 2 characters', 'error'); return; }
+
+  const btn = document.getElementById('btnCreateIsland');
+  btn.classList.add('btn-loading');
+  btn.disabled = true;
+
+  try {
+    const island = await apiCall('POST', '/islands/', {
+      name,
+      description: description || null,
+      biome: selectedBiome,
+      visibility: selectedVisibility,
+      tags
+    });
+    showToast(`Island "${island.name}" created! 🏝️`, 'success');
+    // Reset form
+    document.getElementById('islandName').value = '';
+    document.getElementById('islandDesc').value = '';
+    document.getElementById('islandTags').value = '';
+    document.querySelectorAll('.biome-option').forEach(o => o.classList.remove('selected'));
+    document.querySelector('.biome-option[data-biome="tropical"]').classList.add('selected');
+    selectedBiome = 'tropical';
+    // Navigate to explore
+    setTimeout(() => switchTab('tabExplore'), 800);
+  } catch(e) {
+    showToast(e.message || 'Failed to create island', 'error');
+  } finally {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+  }
+});
+
+// ============================================================
+// FEED
+// ============================================================
+async function loadFeed() {
+  const container = document.getElementById('feedContent');
+  if (!authToken) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">🔒</div><h3>Sign in to see your feed</h3><p>Follow islands to see activity here</p></div>`;
+    return;
+  }
+  container.innerHTML = '<div class="spinner"></div>';
+  try {
+    const data = await apiCall('GET', '/social/feed');
+    const items = data.items || data.feed || data || [];
+    if (!items.length) {
+      container.innerHTML = `<div class="empty-state"><div class="icon">🌊</div><h3>Your feed is empty</h3><p>Explore and like islands to populate your feed</p><button class="btn btn-primary" style="width:auto;margin:0 auto" onclick="switchTab('tabExplore')">Explore Islands</button></div>`;
+      return;
+    }
+    container.innerHTML = items.map(item => `
+      <div class="feed-item">
+        <div class="feed-item-header">
+          <div class="feed-avatar">${getInitials(item.user_name || item.actor || '?')}</div>
+          <div>
+            <div class="feed-user">${escHtml(item.user_name || item.actor || 'Someone')}</div>
+            <div class="feed-time">${formatDate(item.created_at || item.timestamp)}</div>
+          </div>
+        </div>
+        <div class="feed-action">${escHtml(item.action || item.text || 'Did something')}</div>
+        ${item.island_name ? `<div class="island-card-wide" style="cursor:default"><div class="biome-bg ${item.biome || 'tropical'}">${BIOME_EMOJI[item.biome] || '🏝️'}</div><div class="island-card-body"><h3>${escHtml(item.island_name)}</h3></div></div>` : ''}
+      </div>
+    `).join('');
+  } catch(e) {
+    container.innerHTML = `<div class="empty-state"><div class="icon">🌊</div><h3>Your feed is empty</h3><p>Explore and like islands to populate your feed</p><button class="btn btn-primary" style="width:auto;margin:0 auto" onclick="switchTab('tabExplore')">Explore Islands</button></div>`;
+  }
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+async function loadProfile() {
+  if (!authToken || !currentUser) {
+    showScreen('screenAuth');
+    return;
+  }
+  const userId = currentUser.id || currentUser.user_id;
+  const name = currentUser.display_name || currentUser.phone || 'User';
+  const initials = getInitials(name);
+
+  document.getElementById('profileAvatarLarge').textContent = initials;
+  document.getElementById('profileDisplayName').textContent = name;
+  document.getElementById('profileHandle').textContent = currentUser.phone || '';
+  document.getElementById('profileBio').textContent = currentUser.bio || 'No bio yet.';
+
+  // Load profile data
+  try {
+    const profile = await apiCall('GET', `/profiles/${userId}`);
+    document.getElementById('profileDisplayName').textContent = profile.display_name || name;
+    document.getElementById('profileBio').textContent = profile.bio || 'No bio yet.';
+    document.getElementById('profileFollowers').textContent = profile.follower_count || 0;
+    document.getElementById('profileFollowing').textContent = profile.following_count || 0;
+    document.getElementById('profileAvatarLarge').textContent = getInitials(profile.display_name || name);
+  } catch(e) { /* profile may not exist yet */ }
+
+  // Load my islands
+  loadMyIslands(userId);
+}
+
+async function loadMyIslands(userId) {
+  const container = document.getElementById('myIslands');
+  try {
+    const data = await apiCall('GET', `/islands/user/${userId}`, null, false);
+    const islands = data.islands || [];
+    document.getElementById('profileIslandCount').textContent = islands.length;
+    if (!islands.length) {
+      container.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="icon">🏝️</div><h3>No islands yet</h3><p>Create your first island!</p></div>`;
+      return;
+    }
+    renderIslandsGrid(islands, container);
+  } catch(e) {
+    container.innerHTML = '<p class="text-muted" style="grid-column:1/-1;padding:20px">Could not load your islands</p>';
+  }
+}
+
+// Edit Profile
+document.getElementById('btnEditProfile').addEventListener('click', () => {
+  document.getElementById('editDisplayName').value = currentUser?.display_name || '';
+  document.getElementById('editBio').value = currentUser?.bio || '';
+  document.getElementById('editProfileModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+});
+
+function closeEditProfileModal(e) {
+  if (e && e.target !== document.getElementById('editProfileModal')) return;
+  document.getElementById('editProfileModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('btnSaveProfile').addEventListener('click', async () => {
+  const displayName = document.getElementById('editDisplayName').value.trim();
+  const bio = document.getElementById('editBio').value.trim();
+  if (!displayName || displayName.length < 2) { showToast('Name must be at least 2 characters', 'error'); return; }
+  const btn = document.getElementById('btnSaveProfile');
+  btn.classList.add('btn-loading');
+  btn.disabled = true;
+  try {
+    await apiCall('PUT', '/profiles/me', { display_name: displayName, bio: bio || null });
+    currentUser = { ...currentUser, display_name: displayName, bio };
+    localStorage.setItem('islyr_user', JSON.stringify(currentUser));
+    document.getElementById('editProfileModal').classList.remove('active');
+    document.body.style.overflow = '';
+    showToast('Profile updated!', 'success');
+    updateNavAvatar();
+    loadProfile();
+  } catch(e) {
+    showToast(e.message || 'Failed to update profile', 'error');
+  } finally {
+    btn.classList.remove('btn-loading');
+    btn.disabled = false;
+  }
+});
+
+// Logout
+document.getElementById('btnLogout').addEventListener('click', () => {
+  authToken = null;
+  currentUser = null;
+  localStorage.removeItem('islyr_token');
+  localStorage.removeItem('islyr_user');
+  showScreen('screenAuth');
+  showToast('Signed out', 'info');
+});
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ============================================================
+// INIT — Check if already logged in
+// ============================================================
+(function init() {
+  if (authToken && currentUser) {
+    enterApp();
+  } else {
+    showScreen('screenAuth');
+  }
+})();
+
+// ============================================================
+// PWA SERVICE WORKER REGISTRATION
+// ============================================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
