@@ -9,6 +9,8 @@
   <meta name="apple-mobile-web-app-title" content="ISLYR" />
   <meta name="description" content="Create, explore, and connect across breathtaking virtual island worlds." />
   <title>ISLYR</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -1404,7 +1406,11 @@
 // ISLYR APP — Core JavaScript
 // ============================================================
 
-const API = 'http://151.241.228.235:4000/api/v1';
+// Auto-detect API base URL: use relative path in production, direct IP in dev
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://151.241.228.235:4000'
+  : (window.location.hostname.includes('151.241.228.235') ? 'http://151.241.228.235:4000' : '');
+const API = API_BASE + '/api/v1';
 let authToken = localStorage.getItem('islyr_token') || null;
 let currentUser = JSON.parse(localStorage.getItem('islyr_user') || 'null');
 let currentPhone = '';
